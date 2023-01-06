@@ -2,14 +2,10 @@ from apikey import API_KEY
 
 import requests
 import json
-from typing import List
+from typing import List, Dict
 from pathlib import Path
 
-destination = Path('data')
-
-# get a Pexels collection by name
-def fetch_collection(name: str):
-
+def get_collections() -> Dict[str, str]:
     # Helper method to get result from an url
     def request_page(url: str):
         return requests.get(
@@ -20,24 +16,25 @@ def fetch_collection(name: str):
                 'page' : 1,
                 'type' : 'photo'
             }
-        ).content
+        ).json()
 
-    
-    photos = []                                             # Output list of photo links
-    url = f'https://api.pexels.com/v1/collections/{name}'   # First url to look at
+    collections = {}                                            # Output list of collection tuples
+    url = f'https://api.pexels.com/v1/collections/featured'     # First url to look at
 
-    # While there are pages to be processed
-    while url != None:
+    while True:
 
         # Fetch jpage of results
         page = request_page(url)
-        print(page)
 
         # Process the results
-        for photo in page['media']:
-            photos.append(photo['src']['small'])
+        for collection in page['collections']:
+            collections[collection['title']] = collection['id']
+
+        # Handle last page 
+        if 'next_page' not in page:
+            break
 
         # Jump to next page of results
         url = page['next_page']
 
-    return photos
+    return collections
