@@ -1,13 +1,13 @@
 from apikey import API_KEY
-from get_collections import get_collections
 
 import requests
-import urllib.request
-import json
 from typing import List, Dict
 from pathlib import Path
 
-destination = Path('data')
+def sanitize_dirname(name:str) -> str:
+    for c in r"#%&{}<>*/\\?$!\"':@=|`+":
+        name =  name.replace(c, '')
+    return name.strip()
 
 # get a Pexels collection by name
 def fetch_collection(name: str) -> List[str]:
@@ -20,7 +20,7 @@ def fetch_collection(name: str) -> List[str]:
             params = {
                 'per_page' : 80,
                 'page' : 1,
-                'type' : 'photo'
+                'type' : 'photos'
             }
         ).json()
 
@@ -48,7 +48,7 @@ def fetch_collection(name: str) -> List[str]:
     return images
 
 
-def download_collection(name: str, path: Path):
+def download_collection(name: str, path: Path) -> None:
     image_collection = fetch_collection(name=name)
 
     for image_url in image_collection:
@@ -61,13 +61,22 @@ def download_collection(name: str, path: Path):
             image.write(image_data.content)
         
 
-for name, id in get_collections().items():
-    print(f"Downloading collection {name} ")
+# main
+if __name__ == '__main__':
+    with open('index.txt', 'r', encoding='utf-8') as index:
+        for row in index:
+            # Extract id and name from the row - divided by the last semicolon
+            id, name = row[::-1].split(':', 1)
+            name = name[::-1].strip()
+            id = id[::-1].strip()
 
-    path = Path(r'C:\Users\Jakub\Documents\CUNI\5\Multimedia retrieval\WallpaperRecommend\data\\'+name)
-    
-    if not path.exists():
-        path.mkdir()
+            # Sanitize the folder name from forbidden characters
+            name= sanitize_dirname(name)
 
-    download_collection(name='id', path=path)
-#print(fetch_collection(name='eulhibt'))
+            print(f"Downloading collection {name} ")
+
+            path = Path(r'C:\Users\Jakub\Documents\CUNI\5\Multimedia retrieval\WallpaperRecommend\data\\'+name)
+            
+            if not path.exists():
+                path.mkdir()
+                download_collection(name=id, path=path)

@@ -1,3 +1,4 @@
+from pprint import pprint
 from apikey import API_KEY
 
 import requests
@@ -38,3 +39,13 @@ def get_collections() -> Dict[str, str]:
         url = page['next_page']
 
     return collections
+
+
+# Creates an index file, 
+if __name__ == '__main__':
+
+    collections = get_collections()
+
+    with open('index.txt', 'w', encoding='utf-8') as index:
+        for name, id in collections.items():
+            index.write(f"{name} : \t{id}\n")
