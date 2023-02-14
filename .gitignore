@@ -1,4 +1,9 @@
 src/apikey.py
 src/__pycache__/
 src/scraper/__pycache__/
+src/browser/__pycache__/
 data/
+mpeg7fex_win32_v2/
+palletes/
+wallpapers/
+images.txt

@@ -1,0 +1,101 @@
+<html>
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    </head>
+
+    <body>
+        <div id="description" class="container">
+            <h1>Wallpaper color recommender</h1>
+            <p>
+                This utility finds the best wallpaper images based on their color schemes.
+                Current version uses a selected dataset of approximately 15000 images from <a href="https://www.pexels.com">pexels.com</a>. 
+                These images are in decreased quality, in order to speed up the processing.
+                Each image then contains a link to its original picture in full quality.<br>
+                
+                If you'd like to adapt it for other data, see <a href="https://github.com/jcatlos/WallpaperRecommend">source code</a>.
+                The documentation shows how to adapt it for your needs.
+            </p>
+            <h2>Browsing:</h2>
+            <p>
+                The database browsing is done in 3 steps: 
+                <h3>Query</h3>
+                <p>
+                    First, select the colour pallete of the desired image.
+                    To specify the colour, select a colour and its desired proportion on the image (0-100).
+                    To add another colour to the pallette, click "+ Add color" button. 
+                    Please note, that all proportions must add up to a number between 0 and 100.
+                </p>
+                <h3>Browse</h3>
+                <p> 
+                    After the first query, the most relevant 9 images are shown. 
+                    You can click on any of them to see them more closely and continue the browsing by clicking "Find similar".
+                    That shows the 9 closest images to the selected one, with the original image in the middle.
+                </p>
+                <h3>Download</h3>
+                <p>
+                    When You find the desired image, click "Get original image" to access the source image. 
+                    The images in the source dataset are scaled down, for quicker processing.
+                </p>
+        </div>
+
+        <div id="query" class="container">
+            <form id="wallpaper-query" action="/" method="get">
+                <h1>Query by color pallette</h1>
+                <div class="form-row">
+                    <label for="color1" class="col-1">Color 1:</label>
+                    <input type="color" id="color1" name="color1" value="#000000" class="col-2"> 
+                    <input type="number" min="0" max="100" name="percentage1" class="col-2" required="true"> 
+                </div>
+                
+                
+                <input class = 'btn btn-primary' type="submit" id="submit-button">
+            </form>
+
+            <button id="addColorButton" class='btn btn-secondary'>+ Add Color</button>
+        </div>
+        
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    
+        <script>
+            
+            function addColor(){
+                var button = document.getElementById('addColorButton');
+                var form = document.getElementById('wallpaper-query');
+                var submitButton = document.getElementById('submit-button');
+                var colorCount = form.getElementsByClassName('form-row').length;
+                var newIndex = colorCount + 1
+
+                var row = document.createElement('div');
+                row.classList.add('form-row');
+
+                labelElement = document.createElement('label');
+                labelElement.setAttribute('for', 'color'+newIndex);
+                labelElement.textContent = 'Color ' + newIndex + ':';
+                labelElement.classList.add('col-1')
+                row.appendChild(labelElement);
+
+                inputElement = document.createElement('input');
+                inputElement.setAttribute('type', 'color');
+                inputElement.setAttribute('id', 'color'+newIndex);
+                inputElement.setAttribute('name', 'color'+newIndex);
+                inputElement.setAttribute('value', "#000000");
+                inputElement.classList.add('col-2');
+                row.appendChild(inputElement);
+
+                percentElement = document.createElement('input');
+                percentElement.setAttribute('type', 'number');
+                percentElement.setAttribute('name', 'percentage'+newIndex);
+                percentElement.setAttribute('min', '0');
+                percentElement.setAttribute('max', '100');
+                percentElement.setAttribute('required', 'true');
+                percentElement.classList.add('col-2');
+                row.appendChild(percentElement)
+
+                form.insertBefore(row, submitButton);
+            }
+
+            document.getElementById('addColorButton').onclick = addColor;
+
+        </script>
+    </body>
+</html>
