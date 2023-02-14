@@ -33,11 +33,6 @@ class CustomHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
         if parsed_path.path == '/':
             print(f'path: {parsed_path.path} | query: {query}')
             if query == {}:
-                print('empty')
-                # self.send_response(200)
-                # self.send_header('Content-type', 'text/html')
-                # self.end_headers()
-                # self.path = 'browser.html'
                 return http.server.SimpleHTTPRequestHandler.do_GET(self)
             
             else:
@@ -74,7 +69,7 @@ class CustomHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
                 for color in pallette:
                     total += int(color[0])
 
-                print(f'pallette: {pallette}')
+                # print(f'pallette: {pallette}')
 
                 if total >= 100 or pallette == []:
                     valid = False
@@ -124,43 +119,13 @@ def find_image(name) -> Path:
 
 
 
-##print(images.head())
-
-# print(images.dtypes)
-
 handler = CustomHttpRequestHandler
 server=socketserver.TCPServer(("", PORT), handler)
 print(f"Server started at port {PORT}. Press CTRL+C to close the server.")
+
 try:
 	server.serve_forever()
 except KeyboardInterrupt:
 	server.server_close()
 	print("Server Closed")	
 
-# with open('out.html', 'w') as site:
-#     site.write(construct_result_page(first.loc['name'], images))
-# print(first)
-# print(find_best_n(first.loc['name'], images, 10))
-# second = images.iloc[200]
-
-# print(first)
-
-# print(f"first pallette: {compose_pallette(first)}")
-# print(f"second pallette: {compose_pallette(second)}")
-# print(f"difference: {pallette_distance(compose_pallette(first), compose_pallette(second))}")
-
-# pal1 = Image.open(Path(first['pallette_path']))
-# pal2 = Image.open(Path(second['pallette_path']))
-# img1 = Image.open(Path(first['image_path']))
-# img2 = Image.open(Path(second['image_path']))
-
-# pal1.show()
-# pal2.show()
-# img1.show()
-# img2.show()
-
-# img = Image.open(Path(first['image_path']))
-# pal = Image.open(Path(first['pallette_path']))
-
-# img.show()
-# pal.show()
