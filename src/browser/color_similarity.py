@@ -31,6 +31,8 @@ def pallette_distance(pallette1: list, pallette2: list):
 
     total_distance = 0
 
+    processed_percents = 0
+
     pallette1.sort(key= lambda x: x[0], reverse=True)
     
     while len(pallette1) > 0 and len(pallette2) > 0:
@@ -49,7 +51,6 @@ def pallette_distance(pallette1: list, pallette2: list):
 
 
         current_cut = min(pallette1[0][0], pallette2[0][0])
-        # print(f'cutting {current_cut} percents')
 
         total_distance += current_cut * color_distance(pallette1[0][1], pallette1[0][2], pallette1[0][3], pallette2[0][1], pallette2[0][2], pallette2[0][3])
 
@@ -61,7 +62,6 @@ def pallette_distance(pallette1: list, pallette2: list):
 
         if pallette1[0][0] <= 0:
             del pallette1[0]
-            # pallette1.sort(key= lambda x: x[0])
 
     return total_distance
 

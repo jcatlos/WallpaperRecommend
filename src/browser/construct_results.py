@@ -7,7 +7,8 @@ header = """<html>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     </head>
 
-    <body>"""
+    <body>
+    """
 
 footer = """        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -43,17 +44,18 @@ def generate_modals(results):
 
     agg = ""
     for i in range(1,10):
+
         index = i
         if index == 5: index = 0
         elif index > 5: index -= 1
-        print(index)
-        print(str(results.iloc[index]['image_path']))
+
         agg += generate_modal(
             str(results.iloc[index]['image_path']), 
             str(results.iloc[index]['pallette_path']),
             str(results.iloc[index]['image_path']).split('\\')[-1],
             index
         )
+        
     return agg
     
 
@@ -79,6 +81,7 @@ def construct_results(
 ):
     return  '''<div id="suggestions" class="container">
     <h1>Results</h1>
+    <a href="/" class="btn btn-primary">Back to main menu</a>
     <div class="row">
         <!-- pridat divom px-0 class aby neboli medzery -->
         <div class="col-4 px-0" data-toggle="modal" data-target="#modal1">
@@ -125,30 +128,6 @@ def construct_results(
 </div>'''
 
 def construct_result_page(results: pd.DataFrame):
-
-    print('results:')
-    print(results, '\n')
-
-    print('params:')
-    print(str(results.iloc[0]['image_path']),
-        str(results.iloc[0]['pallette_path']),
-        str(results.iloc[1]['image_path']),
-        str(results.iloc[1]['pallette_path']),
-        str(results.iloc[2]['image_path']),
-        str(results.iloc[2]['pallette_path']),
-        str(results.iloc[3]['image_path']),
-        str(results.iloc[3]['pallette_path']),
-        str(results.iloc[4]['image_path']),
-        str(results.iloc[4]['pallette_path']),
-        str(results.iloc[5]['image_path']),
-        str(results.iloc[5]['pallette_path']),
-        str(results.iloc[6]['image_path']),
-        str(results.iloc[6]['pallette_path']),
-        str(results.iloc[7]['image_path']),
-        str(results.iloc[7]['pallette_path']),
-        str(results.iloc[8]['image_path']),
-        str(results.iloc[8]['pallette_path']),
-        '\n')
 
     results_html = construct_results(
         str(results.iloc[0]['image_path']),
